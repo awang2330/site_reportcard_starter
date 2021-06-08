@@ -161,7 +161,6 @@ function addCourseRowToReportCard(course, rowNum) {
   // update the code here with information about the course passed to this function
   reportCardTable.innerHTML += `
     <div class="table-row">
-    
       <h4 class="code-col">${course.code}</h4>
       <h4 class="name-col">${course.name}</h4>
       <h4 class="sen-col">${course.semester}</h4>
@@ -178,15 +177,33 @@ function addCourseRowToReportCard(course, rowNum) {
  */
 function updateReportCard() {
   updateDropdownLabel()
-  reportCardTable.innerHTML = ``
 
+  reportCardTable.innerHTML = ``
   // add your code here
 
   addReportCardHeaders()
 
-  studentData[semester].forEach((element) => {
+  // addCourseRowToReportCard(studentData[semester][0], semester)
+
+  let totalCredits = 0
+  let totalPoints = 0
+
+  studentData[semester].forEach(element => {
     addCourseRowToReportCard(element, semester)
+    totalCredits += element.credits
+
+    // total points is grade multiplied by credits of that course
+    totalPoints += (gpaPointsLookup[element.grade] * element.credits)
   });
+
+  reportCardTable.innerHTML += `
+  <div class="table-row">
+    <h4>Total Credits: ${totalCredits}</h4>
+    <h4>Total Points: ${totalPoints}</h4>
+    <h4>GPA: ${totalPoints/totalCredits}</h4>
+  </div>
+  `
+
 }
 
 /**
@@ -197,12 +214,14 @@ function updateReportCard() {
  */
 function toggleDropdown() {
   // code goes here
-  if (dropdown.classList.contains('closed')) {
-    dropdown.classList.remove('closed')
-  }
-  else {
-    dropdown.classList.add('closed')
-  }
+  // if (dropdown.classList.contains('closed')) {
+  //   dropdown.classList.remove('closed')
+  // }
+  // else {
+  //   dropdown.classList.add('closed')
+  // }
+
+  dropdown.classList.toggle('closed')
 }
 
 /**
